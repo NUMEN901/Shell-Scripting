@@ -99,4 +99,39 @@ line1="Please enter the username of the user "
 line2="account you wshh to delete from system:"
 get_answer
 user_account=$answer
+#
+#Double check Double check with script user that this is the correct User Account
+#
+line1="Is $user_account the user account "
+line2="you wish to delete from the system? [y/n]"
+get_answer
+
+# Call process_answer funtion:
+if user answers anything but "yes", exit script
+
+exit_line1="Because the account, $user_account, is not "
+exit_line1="the one you wish to delete, we are leaving the script ... "
+process_answer
+#
+
+# Check that user_account is really an account on the system
+#
+user_account_record=$(cat /etc/passwd | grep -w $user_account)
+
+if [ $? -eq 1 ]  # If the account is not found, exit script
+then
+      echo
+      echo "Account, $user_account, not found. "
+      echo "Leaving the script ... "
+      echo
+      exit 
+fi
+#
+echo
+echo "I found this record:"
+echo $user_account_record
+echo
+#
+line1="Is this the correct User Account? [y/n]"
+get_answer
 
